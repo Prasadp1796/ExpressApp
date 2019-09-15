@@ -2,8 +2,8 @@ var mongoose = require('mongoose');
 
 let employeeSchema = mongoose.Schema({
     FirstName: String,
-    MiddleName: String,
     LastName: String,
+    Password: String,
     EmailID: {type: String, unique: true, sparse: true},
     Contact: {type: String, unique: true, sparse: true}
 });
