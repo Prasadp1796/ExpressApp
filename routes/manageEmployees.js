@@ -4,6 +4,8 @@ const {check, validationResult} = require('express-validator');
 
 var isLoggedIn = require('../lib/isLoggedIn');
 
+let transporter = require('../lib/mailer');
+
 //Employee Schema Imported Here
 var employeeSchema = require('../Schema/employeeSchema');
 
@@ -44,8 +46,29 @@ router.route('/createEmployee').get(isLoggedIn, function (req, res) {
         newEmployee.save(function (err) {
             if (err)
                 throw err;
-            else
-                res.redirect('/manageEmployees');
+            else {
+                const mailOptions = {
+                    from: "System Admin Mail", // sender address
+                    to: req.body.EmailID, // list of receivers,
+                    // cc: "", //cc address
+                    subject: "", // Subject line
+                    html: ""
+
+                };
+
+                transporter.sendMail(mailOptions, function (err, info) {
+                    if (err) {
+                        console.log(err);
+                        throw err;
+                    }
+
+                    else {
+                        res.redirect('/manageEmployees')
+
+                    }
+                });
+            }
+
         });
     }
 });
